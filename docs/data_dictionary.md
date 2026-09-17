@@ -1,53 +1,130 @@
-# Data Dictionary — Olist project
+# Data Dictionary — Olist Project
 
-## customers
-- customer_id: order-specific customer identifier used by the orders table.
-- customer_unique_id: stable customer identifier for customer-level behavior.
-- customer_zip_code_prefix: ZIP-code prefix.
-- customer_city: customer city.
-- customer_state: customer state.
+This document summarises the source fields used by the analytical workflow.
 
-## orders
-- order_id: unique order identifier.
-- customer_id: foreign key to customers.
-- order_status: order lifecycle status.
-- order_purchase_timestamp: purchase time.
-- order_approved_at: approval time.
-- order_delivered_carrier_date: carrier handoff date.
-- order_delivered_customer_date: customer delivery date.
-- order_estimated_delivery_date: estimated delivery date.
+## Customers
 
-## order_items
-- order_id: foreign key to orders.
-- order_item_id: line number inside an order.
-- product_id: product identifier.
-- seller_id: seller identifier.
-- shipping_limit_date: seller shipping deadline.
-- price: item price.
-- freight_value: freight charged for that line.
+| Field | Meaning |
+|---|---|
+| `customer_id` | Order-specific customer identifier used by the orders table |
+| `customer_unique_id` | Stable customer identifier for customer-level behavior |
+| `customer_zip_code_prefix` | Customer ZIP-code prefix |
+| `customer_city` | Customer city |
+| `customer_state` | Customer state |
 
-## payments
-- order_id: order identifier.
-- payment_sequential: payment sequence within order.
-- payment_type: payment method.
-- payment_installments: number of installments.
-- payment_value: payment amount.
+## Orders
 
-## reviews
-- review_id: review identifier.
-- order_id: associated order.
-- review_score: 1–5 score.
-- comment fields: text feedback.
-- creation/answer timestamps: review lifecycle.
+| Field | Meaning |
+|---|---|
+| `order_id` | Unique order identifier |
+| `customer_id` | Customer foreign key |
+| `order_status` | Order lifecycle status |
+| `order_purchase_timestamp` | Purchase timestamp |
+| `order_approved_at` | Approval timestamp |
+| `order_delivered_carrier_date` | Carrier handoff date |
+| `order_delivered_customer_date` | Customer delivery date |
+| `order_estimated_delivery_date` | Estimated delivery date |
 
-## products
-Product catalog attributes including category, text lengths, photo count and dimensions/weight.
+## Order items
 
-## sellers
-Seller identity and location fields.
+| Field | Meaning |
+|---|---|
+| `order_id` | Order foreign key |
+| `order_item_id` | Item-line number within an order |
+| `product_id` | Product identifier |
+| `seller_id` | Seller identifier |
+| `shipping_limit_date` | Seller shipping deadline |
+| `price` | Item price |
+| `freight_value` | Freight charged for the item line |
 
-## geolocation
-ZIP-code prefix mapped to approximate latitude/longitude and location names.
+## Payments
 
-## category translation
-Portuguese category name to English category label.
+| Field | Meaning |
+|---|---|
+| `order_id` | Order identifier |
+| `payment_sequential` | Payment sequence within an order |
+| `payment_type` | Payment method |
+| `payment_installments` | Number of installments |
+| `payment_value` | Payment amount |
+
+## Reviews
+
+| Field | Meaning |
+|---|---|
+| `review_id` | Review identifier |
+| `order_id` | Associated order |
+| `review_score` | Review score from 1 to 5 |
+| `comment_*` | Customer comment fields |
+| Review timestamps | Review creation/answer lifecycle timestamps |
+
+## Products
+
+Product catalog attributes including:
+
+- category
+- name-length information
+- description-length information
+- photo count
+- dimensions
+- weight
+
+## Sellers
+
+Seller identity and location attributes.
+
+## Geolocation
+
+ZIP-code-prefix mapping with approximate:
+
+- latitude
+- longitude
+- city
+- state
+
+The mapping is approximate and should not be treated as exact customer coordinates.
+
+## Category translation
+
+Maps Portuguese category names to English category labels.
+
+## Analytical identifiers
+
+### Customer-level analysis
+
+Use:
+
+```text
+customer_unique_id
+```
+
+### Order-level analysis
+
+Use:
+
+```text
+order_id
+```
+
+### Item-level analysis
+
+Use:
+
+```text
+order_id + order_item_id
+```
+
+### Seller-level analysis
+
+Use:
+
+```text
+seller_id
+```
+
+### Product-level analysis
+
+Use:
+
+```text
+product_id
+```
